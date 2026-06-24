@@ -1,0 +1,20 @@
+# render.yaml — Render "Blueprint" config
+# Lets Render auto-detect this repo and create the service with one click,
+# instead of clicking through the dashboard manually.
+
+services:
+  - type: web
+    name: social-agent
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # change to 'starter' or higher if you need more resources
+    region: oregon         # pick whichever region is closest to your users
+    branch: main
+    autoDeploy: true       # auto-redeploys whenever you push to `branch`
+    envVars:
+      - key: BUFFER_API_KEY
+        sync: false        # sync:false means: set this manually in the Render dashboard,
+      - key: OPENROUTER_API_KEY
+        sync: false        # never commit real secrets into this file or git
+      - key: NODE_ENV
+        value: production
