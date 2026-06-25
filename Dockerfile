@@ -13,13 +13,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# These are needed at build time if any page does static generation
-# using them. Safe to leave blank if you don't use them at build time.
-ARG BUFFER_API_KEY
-ARG OPENROUTER_API_KEY
-ENV BUFFER_API_KEY=$BUFFER_API_KEY
-ENV OPENROUTER_API_KEY=$OPENROUTER_API_KEY
-
 RUN npm run build
 
 # ---- Stage 3: Run the app ----
@@ -29,6 +22,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+
 # Create a non-root user (good practice, avoids running as root in prod)
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
